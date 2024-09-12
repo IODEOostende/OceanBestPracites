@@ -37,8 +37,6 @@ const navigation_links = [
   },
 ];
 
-const firstVisitCookieName = "obp-search_visited";
-
 class Main extends Component {
 
   componentDidMount() {
@@ -62,18 +60,9 @@ class Main extends Component {
     this.props.history.push(route);
   }
 
-  // sets cookie on welcome message modal close
-  handleWelcomeModalClose() {
-    const cookieDate = new Date();
-    cookieDate.setFullYear(cookieDate.getFullYear() + 1);
-    document.cookie = `${firstVisitCookieName}=true; expires=${cookieDate.toUTCString()};`;
-  }
-
   render() {
 
     const { search, activeSearch } = this.props.searchReducer;
-
-    const isFirstTimeVisit = !document.cookie.includes(firstVisitCookieName);
 
     return (
       <Wrapper header={false} page="landing" childrenContainerClass="landing" footerLinks={true}>
@@ -134,30 +123,19 @@ class Main extends Component {
           </div>
         </section>
 
-        {isFirstTimeVisit && (
-          <FullScreenModal
-            open={true}
-            noLink={true}
-            modalTitle="Welcome to Ocean Best Practices"
-            onClose={this.handleWelcomeModalClose}
-            closeLabel="Accept and Continue"
-          >
-            <div className="link__list-toggle-modal welcome-modal">
-              <p>
-                The Ocean Best Practices System (OBPS) is a secure, permanent global repository of ocean research, operations, data/information management and
-                applications methodologies (also known as “BestPractices”) ** The OBPS invites the ocean community to submit their own methodologies to share
-                globally with their colleagues.
-              </p>
-              <p>
-                Please note, unless it is annotated as Endorsed by an Expert Panel, inclusion of a methodology in OBPS does not indicate a recommendation by OBPS.
-              </p>
-              <p className="foot-notes">
-                <b>**</b> A Best Practice is defined as “a methodology that has repeatedly produced superior results relative to other methodologies with the same objective”. To be fully elevated to a best practice,
-                a promising method will have been adopted and employed by multiple organizations.
-              </p>
-            </div>
-          </FullScreenModal>
-        )}
+        <FullScreenModal
+          open={true}
+          noLink={true}
+          modalTitle="Welcome to Ocean Best Practices"
+          closeLabel="Continue"
+        >
+          <div className="link__list-toggle-modal welcome-modal">
+            <p>
+              The OBPS is a secure, permanent global repository of ocean research, operations, data/information and applications methods.
+              Methods not showing as “ENDORSED” may not be best practices.
+            </p>
+          </div>
+        </FullScreenModal>
       </Wrapper>
     );
   }
